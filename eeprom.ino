@@ -48,9 +48,7 @@ void setup() {
 
   // Disable chip.
   digitalWrite(we, HIGH);
-  delay(10);
   digitalWrite(ce, HIGH);
-  delay(10);
   digitalWrite(oe, HIGH);
   delay(10);
 
@@ -58,6 +56,8 @@ void setup() {
 }
 
 int doWrite = 1;
+int diff = -1;
+String last_result = "";
 
 void loop(){
   delay(500);
@@ -78,8 +78,10 @@ void loop(){
     // 111111111110100 -> 01111111
     write(LOW, HIGH, LOW, LOW, 0,1,1,1,1,1,1,1);
   }
+
+  doWrite = 1;
   
-  delay(10000);
+  delay(2000);
 
   String result = "--------\n";
   
@@ -100,6 +102,12 @@ void loop(){
 
   Serial.println(result);
 
+  if (last_result != result) {
+    diff++;
+  }
+  last_result = result;
+  Serial.println(diff);
+
 }
 
 String read(unsigned int ad3, unsigned int ad2, unsigned int ad1, unsigned int ad0) {
@@ -107,11 +115,6 @@ String read(unsigned int ad3, unsigned int ad2, unsigned int ad1, unsigned int a
   // When CE and OE are low and WE is high, the
   // data stored at the memory location determined by the address pins is asserted on the outputs.
 
-  digitalWrite(we, HIGH);
-  digitalWrite(ce, HIGH);
-  digitalWrite(oe, HIGH);
-  delay(10);
-  
   pinMode(io0, INPUT);
   pinMode(io1, INPUT);
   pinMode(io2, INPUT);
@@ -126,6 +129,11 @@ String read(unsigned int ad3, unsigned int ad2, unsigned int ad1, unsigned int a
   digitalWrite(a1, ad1);
   digitalWrite(a0, ad0);
 
+  digitalWrite(we, HIGH);
+  digitalWrite(ce, HIGH);
+  digitalWrite(oe, HIGH);
+  delay(10);
+
   digitalWrite(ce, LOW);
   digitalWrite(oe, LOW);
   delay(10);
@@ -135,14 +143,7 @@ String read(unsigned int ad3, unsigned int ad2, unsigned int ad1, unsigned int a
   delay(10);
   digitalWrite(oe, HIGH);
   digitalWrite(ce, HIGH);
-
   delay(10);
-  digitalWrite(ce, LOW);
-  digitalWrite(oe, LOW);
-
-  delay(10);
-  digitalWrite(oe, HIGH);
-  digitalWrite(ce, HIGH);
 
   return output;
 }
@@ -165,9 +166,6 @@ void write(unsigned int ad3, unsigned int ad2, unsigned int ad1, unsigned int ad
   pinMode(io6, OUTPUT);
   pinMode(io7, OUTPUT);
 
-  digitalWrite(ce, LOW);
-  delay(10);
-
   digitalWrite(a3, ad3);
   digitalWrite(a2, ad2);
   digitalWrite(a1, ad1);
@@ -183,12 +181,16 @@ void write(unsigned int ad3, unsigned int ad2, unsigned int ad1, unsigned int ad
   digitalWrite(io0, i0);
 
   delay(10);
+
+  digitalWrite(ce, LOW);
+  delay(10);
+
   digitalWrite(we, LOW);
   delay(10);
   
+  delay(10);
   digitalWrite(we, HIGH);
-  delay(10);
   digitalWrite(ce, HIGH);
-  delay(10);
+  delay(100);
 }
 

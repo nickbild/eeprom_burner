@@ -1,7 +1,3 @@
-// fffc
-// 1111111111111100
-// 111111111111100 = 32764
-//
 // Set FFFC-FFFD to FFE0 (little endian):
 // 111111111111100 -> 11100000
 // 111111111111101 -> 11111111
@@ -37,9 +33,6 @@ int sclk = 6; // orange
 int ce = 10;
 int oe = 11;
 int we = 12;
-
-//int addr[16];
-//int data[8];
 
 void setup() {
   pinMode(ser0, OUTPUT);
@@ -78,9 +71,7 @@ void loop(){
   write("111111111100101", "11111111");
   write("111111111100110", "10000101");
   write("111111111100111", "00000001");
-  
   write("111111111101000", "11101010");
-  
   write("111111111101001", "01101100");
   write("111111111101010", "00000000");
   write("111111111101011", "00000000");
@@ -149,43 +140,4 @@ int charToDigital(char val) {
 
   return 0;
 }
-
-// Removed read -- SIPO shift registers won't allow for it.  :(
-//String read(unsigned int ad4, unsigned int ad3, unsigned int ad2, unsigned int ad1, unsigned int ad0) {
-//  // From datasheet:
-//  // When CE and OE are low and WE is high, the
-//  // data stored at the memory location determined by the address pins is asserted on the outputs.
-//
-//  digitalWrite(we, HIGH);
-//  digitalWrite(ce, HIGH);
-//  digitalWrite(oe, HIGH);
-//  delay(10);
-//
-//  pinMode(io0, INPUT);
-//  pinMode(io1, INPUT);
-//  pinMode(io2, INPUT);
-//  pinMode(io3, INPUT);
-//  pinMode(io4, INPUT);
-//  pinMode(io5, INPUT);
-//  pinMode(io6, INPUT);
-//  pinMode(io7, INPUT);
-//
-//  digitalWrite(a4, ad4);
-//  digitalWrite(a3, ad3);
-//  digitalWrite(a2, ad2);
-//  digitalWrite(a1, ad1);
-//  digitalWrite(a0, ad0);
-//
-//  digitalWrite(ce, LOW);
-//  digitalWrite(oe, LOW);
-//  delay(10);
-//
-//  String output = String(digitalRead(io7)) + String(digitalRead(io6)) + String(digitalRead(io5)) + String(digitalRead(io4)) + String(digitalRead(io3)) + String(digitalRead(io2)) + String(digitalRead(io1)) + String(digitalRead(io0));
-//
-//  digitalWrite(oe, HIGH);
-//  digitalWrite(ce, HIGH);
-//  delay(10);
-//
-//  return output;
-//}
 
